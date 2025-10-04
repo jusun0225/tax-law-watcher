@@ -49,6 +49,23 @@ SOURCES = [
      "item_selector":"a","base":"https://www.law.go.kr"},
 ]
 
+SOURCES.extend([
+    # 정부안 '입법예고' 공식 RSS (법제처 Open API)
+    {
+        "name": "법제처_입법예고(RSS)",
+        "type": "rss",
+        "url": "https://open.moleg.go.kr/data/xml/li_rssSH01.xml",
+    },
+    # 기획재정부 입법·행정예고 (HTML 목록 파싱)
+    {
+        "name": "기재부_입법·행정예고",
+        "type": "html",
+        "url": "https://www.moef.go.kr/lw/lap/TbPrvntcList.do?bbsId=MOSFBBS_000000000055&menuNo=7050300",
+        "item_selector": "table a, .bbsList a, a[href*='TbPrvntcView']",
+        "base": "https://www.moef.go.kr",
+    },
+])
+
 HEADERS = {"User-Agent":"Mozilla/5.0 (TaxLawWatcher/1.0)"}
 
 def ensure_dir(p):
