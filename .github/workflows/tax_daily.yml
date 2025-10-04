@@ -1,0 +1,23 @@
+name: Tax Watcher Daily
+on:
+  schedule:
+    - cron: "0 0 * * *"   # 00:00 UTC = 09:00 KST
+  workflow_dispatch: {}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Run daily
+        env:
+          NTFY_URL:  ${{ secrets.NTFY_URL }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          STATE_FILE: .state/tax_state.json
+          MAX_ITEMS_PER_SOURCE: "30"
+        run: |
+          mkdir -p .state
+          python tax_watch.py
